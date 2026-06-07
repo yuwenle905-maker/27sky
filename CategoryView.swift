@@ -14,6 +14,8 @@ struct CategoryView: View {
     @State private var newBudgetText = ""
     @State private var showClearConfirm = false
     @State private var clearMode: ClearMode = .week
+    @State private var recordToDelete: ExpenseRecord?
+    @State private var showDeleteConfirm = false
 
     private let haptic = UIImpactFeedbackGenerator(style: .medium)
 
@@ -269,18 +271,35 @@ struct CategoryView: View {
             Text("¥\(record.amount, specifier: "%.2f")")
                 .font(.subheadline.bold())
                 .foregroundColor(category.accentColor)
+
+            // 删除按钮
+            Button {
+                recordToDelete = record
+                showDeleteConfirm = true
+                haptic.impactOccurred()
+            } label: {
+                Image(systemName: "trash")
+                    .font(.caption)
+                    .foregroundColor(.red.opacity(0.7))
+                    .padding(.leading, 8)
+            }
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 10)
         .background(Color(.secondarySystemGroupedBackground))
-        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-            Button(role: .destructive) {
-                withAnimation(.spring(response: 0.35)) {
-                    ctx.delete(record)
+        .alert("删除这笔账单？", isPresented: $showDeleteConfirm) {
+            Button("删除", role: .destructive) {
+                if let r = recordToDelete {
+                    withAnimation(.spring(response: 0.35)) {
+                        ctx.delete(r)
+                    }
+                    haptic.impactOccurred()
                 }
-                haptic.impactOccurred()
-            } label: {
-                Label("删除", systemImage: "trash")
+            }
+            Button("取消", role: .cancel) {}
+        } message: {
+            if let r = recordToDelete {
+                Text("¥\(r.amount, specifier: "%.2f")  \(r.note.isEmpty ? "无备注" : r.note)")
             }
         }
     }

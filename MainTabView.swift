@@ -19,6 +19,11 @@ struct MainTabView: View {
                     Label("统计", systemImage: "chart.bar.fill")
                 }
                 .tag(5)
+            SettingsView()
+                .tabItem {
+                    Label("设置", systemImage: "gearshape.fill")
+                }
+                .tag(6)
         }
         .tint(.accentColor)
     }
