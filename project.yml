@@ -1,0 +1,63 @@
+name: 随手记
+options:
+  bundleIdPrefix: com.yourname.suishoji
+  deploymentTarget:
+    iOS: "16.0"
+  xcodeVersion: "15.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    TARGETED_DEVICE_FAMILY: "1"
+    INFOPLIST_KEY_NSFaceIDUsageDescription: "随手记需要验证您的身份以保护账单隐私"
+
+targets:
+  随手记:
+    type: application
+    platform: iOS
+    sources:
+      - path: .
+        excludes:
+          - "Widget.swift"
+          - "*.yml"
+          - ".github/**"
+          - "README.md"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yourname.suishoji
+        PRODUCT_NAME: 随手记
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_IDENTITY: ""
+        CODE_SIGNING_REQUIRED: "NO"
+        CODE_SIGNING_ALLOWED: "NO"
+    entitlements:
+      path: 随手记.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.yourname.suishoji
+
+  随手记Widget:
+    type: app-extension
+    platform: iOS
+    product: 随手记WidgetExtension
+    sources:
+      - path: Widget.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yourname.suishoji.widget
+        PRODUCT_NAME: 随手记Widget
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        CODE_SIGN_IDENTITY: ""
+        CODE_SIGNING_REQUIRED: "NO"
+        CODE_SIGNING_ALLOWED: "NO"
+    entitlements:
+      path: 随手记Widget.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.yourname.suishoji
+    dependencies:
+      - target: 随手记
