@@ -27,7 +27,7 @@ struct AddExpenseSheet: View {
     }
 
     private var dateButtonLabel: String {
-        if isToday { return "今天（\(formattedDate(selectedDate)）" }
+        if isToday { return "今天(\(formattedDate(selectedDate)))" }
         return formattedDate(selectedDate)
     }
 
@@ -35,20 +35,10 @@ struct AddExpenseSheet: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-
-                    // 金额输入（大号，最突出）
                     amountSection
-
-                    // 日期选择
                     dateSection
-
-                    // 备注
                     noteSection
-
-                    // 分类切换
                     categorySection
-
-                    // 保存按钮
                     saveButton
                 }
                 .padding(20)
@@ -66,9 +56,13 @@ struct AddExpenseSheet: View {
         .presentationDragIndicator(.visible)
         .presentationCornerRadius(24)
     }
+}
+
+// MARK: - 子视图扩展
+extension AddExpenseSheet {
 
     // MARK: - 金额区
-    private var amountSection: some View {
+    var amountSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("金额")
                 .font(.caption.bold())
@@ -95,7 +89,7 @@ struct AddExpenseSheet: View {
     }
 
     // MARK: - 日期区
-    private var dateSection: some View {
+    var dateSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("日期")
                 .font(.caption.bold())
@@ -154,7 +148,7 @@ struct AddExpenseSheet: View {
     }
 
     // MARK: - 备注区
-    private var noteSection: some View {
+    var noteSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("备注（可选）")
                 .font(.caption.bold())
@@ -172,7 +166,7 @@ struct AddExpenseSheet: View {
     }
 
     // MARK: - 分类切换
-    private var categorySection: some View {
+    var categorySection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("分类")
                 .font(.caption.bold())
@@ -216,7 +210,7 @@ struct AddExpenseSheet: View {
     }
 
     // MARK: - 保存按钮
-    private var saveButton: some View {
+    var saveButton: some View {
         Button {
             save()
         } label: {
@@ -244,7 +238,7 @@ struct AddExpenseSheet: View {
     }
 
     // MARK: - 保存逻辑
-    private func save() {
+    func save() {
         guard let amountVal = Double(amount), amountVal > 0 else {
             notificationHaptic.notificationOccurred(.error)
             return
@@ -260,7 +254,7 @@ struct AddExpenseSheet: View {
         dismiss()
     }
 
-    private func formattedDate(_ date: Date) -> String {
+    func formattedDate(_ date: Date) -> String {
         let f = DateFormatter()
         f.dateFormat = "M月d日"
         f.locale = Locale(identifier: "zh_CN")
